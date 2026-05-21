@@ -1,32 +1,477 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>EcoTrack AI</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoTrack AI - Perfect Layout</title>
+  <style>
+    :root {
+      --primary: #4caf50;
+      --glass: rgba(255, 255, 255, 0.05);
+      --border: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex; 
+      flex-direction: column; 
+      min-height: 100vh; 
+      margin: 0; 
+      background: #000;
+      color: #fff; 
+      font-family: 'Segoe UI', sans-serif;
+      align-items: center;
+      padding-bottom: 40px;
+      overflow-y: auto;
+    }
+
+    .bg-glow {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 50% 50%, #0a200a 0%, #000 70%);
+      z-index: -1;
+    }
+
+    header {
+      text-align: center; 
+      padding: 25px 10px 5px 10px;
+      width: 100%;
+    }
+    header h1 { margin: 0; font-size: 24px; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; }
+    header p { margin: 5px 0 0 0; font-size: 11px; color: #888; }
+
+    .main-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 340px; 
+      margin-top: 150px; 
+      margin-bottom: 140px;
+      position: relative;
+    }
+
+    .menu-container { 
+      position: relative; 
+      width: 60px; 
+      height: 60px; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center;
+    }
+
+    .center-node {
+      position: absolute; width: 75px; height: 75px;
+      background: #111; border: 2px solid var(--primary); border-radius: 50%;
+      display: flex; justify-content: center; align-items: center;
+      z-index: 10; cursor: pointer;
+      box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+    }
+    .center-node h2 { margin: 0; font-size: 10px; color: var(--primary); letter-spacing: 1px; }
+
+    .eco-item {
+      position: absolute; width: 95px; height: 95px; 
+      border-radius: 50%; background: rgba(15, 15, 15, 0.95);
+      backdrop-filter: blur(5px); display: flex; flex-direction: column; 
+      justify-content: center; align-items: center;
+      opacity: 0; pointer-events: none;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.4, 1);
+      border: 1px solid var(--border);
+    }
+
+    /* SVG text tracking adjustments */
+    .eco-item svg { position: absolute; width: 100%; height: 100%; pointer-events: none; }
+    .eco-item text { font-size: 7px; fill: #fff; font-weight: bold; letter-spacing: 0.3px; }
+    
+    .eco-item input {
+      width: 45px; background: transparent; border: none; border-bottom: 1.5px solid var(--primary);
+      color: #fff; text-align: center; font-size: 14px; z-index: 5; outline: none;
+      margin-top: 6px; /* Slightly pushed down to give icon room */
+    }
+    
+    /* Repositioned icon to sit comfortably beneath the adjusted text path */
+    .eco-item span.icon { font-size: 18px; z-index: 5; margin-top: 4px; }
+
+    .show .eco-item { opacity: 1; pointer-events: auto; }
+    
+    /* Radial Spreads */
+    .show .car     { transform: translate(0, -130px); border-color: #ff4444; }
+    .show .meat    { transform: translate(115px, -65px); border-color: #ffbb33; }
+    .show .elec    { transform: translate(115px, 65px); border-color: #fbff00; }
+    .show .bus     { transform: translate(0, 130px); border-color: #33b5e5; }
+    .show .recycle { transform: translate(-115px, 65px); border-color: #aa66cc; }
+    .show .water   { transform: translate(-115px, -65px); border-color: #2bbbad; }
+
+    .result-area {
+      width: 90vw; 
+      max-width: 340px;
+      display: flex; 
+      flex-direction: column; 
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .calc-btn {
+      padding: 14px; background: var(--primary); border: none; border-radius: 10px;
+      color: white; font-weight: bold; width: 100%; text-transform: uppercase; font-size: 12px;
+      cursor: pointer; letter-spacing: 1px;
+      box-shadow: 0 4px 10px rgba(76, 175, 80, 0.2);
+    }
+
+    .progress-container { width: 100%; height: 6px; background: #222; border-radius: 4px; margin: 15px 0; }
+    .progress-bar { width: 0%; height: 100%; background: var(--primary); transition: 0.5s; border-radius: 4px; }
+
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+    .info-box { background: var(--glass); border: 1px solid var(--border); padding: 10px; border-radius: 8px; font-size: 10px; color: #aaa; text-align: center; }
+    .info-box b { color: #fff; display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;}
+
+    /* ======================================================== */
+    /* PRACTICE SCENARIOS DRAWER COMPONENT STYLES (ADDED EXTRA)  */
+    /* ======================================================== */
+    .practice-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(76, 175, 80, 0.15);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    .practice-btn:hover {
+      background: var(--primary);
+      color: #000;
+      box-shadow: 0 0 12px rgba(76, 175, 80, 0.4);
+    }
+
+    .practice-panel {
+      position: fixed;
+      top: 0;
+      right: -400px; 
+      width: 360px;
+      height: 100vh;
+      background: #0d1117;
+      border-left: 1px solid var(--border);
+      box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+      transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .practice-panel.open {
+      right: 0; 
+    }
+
+    .panel-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-header h3 {
+      color: var(--primary);
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      color: #fff;
+    }
+
+    .panel-content {
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .panel-hint {
+      color: #8b949e;
+      font-size: 13px;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .table-container {
+      width: 100%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 12px 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #c9d1d9;
+    }
+
+    th {
+      color: #8b949e;
+      font-weight: 600;
+    }
+
+    .eco-warrior { color: #4caf50 !important; }
+    .avg-joe { color: #ffeb3b !important; }
+    .high-impact { color: #f44336 !important; }
+
+    .panel-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 999;
+    }
+
+    .panel-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    @media (max-width: 480px) {
+      .practice-panel {
+        width: 100%;
+        right: -100%;
+      }
+      .practice-btn {
+        top: auto;
+        bottom: 20px; 
+        right: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>🌍 EcoTrack AI</h1>
-    <p>Track your daily carbon footprint</p>
+<div class="bg-glow"></div>
 
-    <div class="card">
-      <label>🚗 Km traveled by car (per day)</label>
-      <input type="number" id="carKm">
+<header>
+  <h1>EcoTrack AI</h1>
+  <p>Precision Environmental Analysis</p>
+</header>
 
-      <label>🍖 Meat meals per week</label>
-      <input type="number" id="meatMeals">
+<div class="main-wrapper">
+  <div class="menu-container show" id="mainMenu">
+    <div class="center-node" onclick="toggleMenu()">
+      <h2 id="centerText">ANALYZE</h2>
+    </div>
 
-      <label>💡 Electricity hours per day</label>
-      <input type="number" id="electricityHours">
+    <div class="eco-item car">
+      <span class="icon">🚗</span>
+      <input type="number" id="v-car" placeholder="0">
+      <svg viewBox="0 0 100 100">
+        <path id="p1" d="M 12,48 A 38,38 0 0,1 88,48" fill="none"/>
+        <text><textPath href="#p1" startOffset="50%" text-anchor="middle">Km per day by car</textPath></text>
+      </svg>
+    </div>
 
-      <button onclick="calculateScore()">Calculate My Impact</button>
+    <div class="eco-item meat">
+      <span class="icon">🥩</span>
+      <input type="number" id="v-meat" placeholder="0">
+      <svg viewBox="0 0 100 100">
+        <path id="p2" d="M 12,48 A 38,38 0 0,1 88,48" fill="none"/>
+        <text><textPath href="#p2" startOffset="50%" text-anchor="middle">Meat meals / week</textPath></text>
+      </svg>
+    </div>
 
-      <div id="result"></div>
-      <div id="aiSuggestion"></div>
+    <div class="eco-item elec">
+      <span class="icon">💡</span>
+      <input type="number" id="v-elec" placeholder="0">
+      <svg viewBox="0 0 100 100">
+        <path id="p3" d="M 12,48 A 38,38 0 0,1 88,48" fill="none"/>
+        <text><textPath href="#p3" startOffset="50%" text-anchor="middle">Electricity hours</textPath></text>
+      </svg>
+    </div>
+
+    <div class="eco-item bus">
+      <span class="icon">🚌</span>
+      <input type="number" id="v-bus" placeholder="0">
+      <svg viewBox="0 0 100 100">
+        <path id="p4" d="M 12,48 A 38,38 0 0,1 88,48" fill="none"/>
+        <text><textPath href="#p4" startOffset="50%" text-anchor="middle">Km per day by bus</textPath></text>
+      </svg>
+    </div>
+
+    <div class="eco-item recycle">
+      <span class="icon">♻️</span>
+      <input type="number" id="v-recycle" placeholder="0">
+      <svg viewBox="0 0 100 100">
+        <path id="p5" d="M 12,48 A 38,38 0 0,1 88,48" fill="none"/>
+        <text><textPath href="#p5" startOffset="50%" text-anchor="middle">Items Recycled</textPath></text>
+      </svg>
+    </div>
+
+    <div class="eco-item water">
+      <span class="icon">💧</span>
+      <input type="number" id="v-water" placeholder="0">
+      <svg viewBox="0 0 100 100">
+        <path id="p6" d="M 12,48 A 38,38 0 0,1 88,48" fill="none"/>
+        <text><textPath href="#p6" startOffset="50%" text-anchor="middle">Liters of water</textPath></text>
+      </svg>
     </div>
   </div>
+</div>
 
-  <script src="script.js"></script>
+<div class="result-area">
+  <button class="calc-btn" onclick="calc()">Calculate My Impact & Run AI Diagnosis</button>
+  <div class="progress-container"><div class="progress-bar" id="pBar"></div></div>
+  <div id="scoreOut" style="font-size: 12px; font-weight:bold; color:var(--primary); margin-bottom: 8px; letter-spacing: 0.5px;">READY</div>
+  <div class="info-grid">
+    <div class="info-box"><b>Goal</b>Low Score</div>
+    <div class="info-box"><b>Tip</b>Plant Trees</div>
+  </div>
+</div>
+
+<button id="practice-toggle-btn" class="practice-btn">📋 Practice Scenarios</button>
+
+<div id="practice-panel" class="practice-panel">
+  <div class="panel-header">
+    <h3>Practice Scenarios</h3>
+    <button id="panel-close-btn" class="close-btn">&times;</button>
+  </div>
+  <div class="panel-content">
+    <p class="panel-hint">Use these sample values to test how the EcoTrack AI diagnostic metrics update:</p>
+    
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th class="eco-warrior">Eco-Warrior</th>
+            <th class="avg-joe">Average</th>
+            <th class="high-impact">High-Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🚗 Km by Car</td>
+            <td>0</td>
+            <td>25</td>
+            <td>80</td>
+          </tr>
+          <tr>
+            <td>🥩 Meat Meals</td>
+            <td>0</td>
+            <td>4</td>
+            <td>14</td>
+          </tr>
+          <tr>
+            <td>💡 Elec. Hours</td>
+            <td>2</td>
+            <td>8</td>
+            <td>18</td>
+          </tr>
+          <tr>
+            <td>🚌 Km by Bus</td>
+            <td>15</td>
+            <td>5</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>♻️ Recycled</td>
+            <td>20</td>
+            <td>5</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>💧 Water (L)</td>
+            <td>50</td>
+            <td>150</td>
+            <td>300</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="panel-overlay" class="panel-overlay"></div>
+
+<script>
+  document.getElementById('mainMenu').classList.add('show');
+
+  function toggleMenu() {
+    const menu = document.getElementById('mainMenu');
+    const centerText = document.getElementById('centerText');
+    menu.classList.toggle('show');
+    
+    if(menu.classList.contains('show')) {
+      centerText.innerText = "ANALYZE";
+    } else {
+      centerText.innerText = "ECOTRACK";
+    }
+  }
+
+  function calc() {
+    const bar = document.getElementById('pBar');
+    const out = document.getElementById('scoreOut');
+    
+    let car = parseFloat(document.getElementById('v-car').value) || 0;
+    let meat = parseFloat(document.getElementById('v-meat').value) || 0;
+    let elec = parseFloat(document.getElementById('v-elec').value) || 0;
+    let bus = parseFloat(document.getElementById('v-bus').value) || 0;
+    let recycle = parseFloat(document.getElementById('v-recycle').value) || 0;
+    let water = parseFloat(document.getElementById('v-water').value) || 0;
+
+    let score = (car * 1.5) + (bus * 0.5) + (meat * 2.5) + (elec * 1.2) + (water * 0.2) - (recycle * 3);
+    let total = Math.max(0, Math.min(score, 100));
+
+    bar.style.width = total + '%';
+    out.innerText = "IMPACT SCORE: " + total.toFixed(0) + "%";
+    
+    if(total > 70) { bar.style.background = "#ff4444"; out.style.color = "#ff4444"; }
+    else if(total > 35) { bar.style.background = "#ffbb33"; out.style.color = "#ffbb33"; }
+    else { bar.style.background = "#4caf50"; out.style.color = "#4caf50"; }
+  }
+
+  // Sidebar Panel Toggling Automation
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleBtn = document.getElementById('practice-toggle-btn');
+    const closeBtn = document.getElementById('panel-close-btn');
+    const panel = document.getElementById('practice-panel');
+    const overlay = document.getElementById('panel-overlay');
+
+    toggleBtn.addEventListener('click', () => {
+      panel.classList.add('open');
+      overlay.classList.add('open');
+    });
+
+    const closePanel = () => {
+      panel.classList.remove('open');
+      overlay.classList.remove('open');
+    };
+
+    closeBtn.addEventListener('click', closePanel);
+    overlay.addEventListener('click', closePanel);
+  });
+</script>
+
 </body>
 </html>
