@@ -81,22 +81,20 @@
       border: 1px solid var(--border);
     }
 
-    /* SVG text tracking adjustments */
     .eco-item svg { position: absolute; width: 100%; height: 100%; pointer-events: none; }
     .eco-item text { font-size: 7px; fill: #fff; font-weight: bold; letter-spacing: 0.3px; }
     
     .eco-item input {
       width: 45px; background: transparent; border: none; border-bottom: 1.5px solid var(--primary);
       color: #fff; text-align: center; font-size: 14px; z-index: 5; outline: none;
-      margin-top: 6px; /* Slightly pushed down to give icon room */
+      margin-top: 6px; 
     }
     
-    /* Repositioned icon to sit comfortably beneath the adjusted text path */
     .eco-item span.icon { font-size: 18px; z-index: 5; margin-top: 4px; }
 
     .show .eco-item { opacity: 1; pointer-events: auto; }
     
-    /* Radial Spreads */
+    /* Perfect Radial Grid Spreads */
     .show .car     { transform: translate(0, -130px); border-color: #ff4444; }
     .show .meat    { transform: translate(115px, -65px); border-color: #ffbb33; }
     .show .elec    { transform: translate(115px, 65px); border-color: #fbff00; }
@@ -127,9 +125,7 @@
     .info-box { background: var(--glass); border: 1px solid var(--border); padding: 10px; border-radius: 8px; font-size: 10px; color: #aaa; text-align: center; }
     .info-box b { color: #fff; display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;}
 
-    /* ======================================================== */
-    /* PRACTICE SCENARIOS DRAWER COMPONENT STYLES (ADDED EXTRA)  */
-    /* ======================================================== */
+    /* Sliding Practice Drawer Styles */
     .practice-btn {
       position: fixed;
       top: 20px;
@@ -358,7 +354,6 @@
   </div>
   <div class="panel-content">
     <p class="panel-hint">Use these sample values to test how the EcoTrack AI diagnostic metrics update:</p>
-    
     <div class="table-container">
       <table>
         <thead>
@@ -370,42 +365,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>🚗 Km by Car</td>
-            <td>0</td>
-            <td>25</td>
-            <td>80</td>
-          </tr>
-          <tr>
-            <td>🥩 Meat Meals</td>
-            <td>0</td>
-            <td>4</td>
-            <td>14</td>
-          </tr>
-          <tr>
-            <td>💡 Elec. Hours</td>
-            <td>2</td>
-            <td>8</td>
-            <td>18</td>
-          </tr>
-          <tr>
-            <td>🚌 Km by Bus</td>
-            <td>15</td>
-            <td>5</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>♻️ Recycled</td>
-            <td>20</td>
-            <td>5</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>💧 Water (L)</td>
-            <td>50</td>
-            <td>150</td>
-            <td>300</td>
-          </tr>
+          <tr><td>🚗 Km by Car</td><td>0</td><td>25</td><td>80</td></tr>
+          <tr><td>🥩 Meat Meals</td><td>0</td><td>4</td><td>14</td></tr>
+          <tr><td>💡 Elec. Hours</td><td>2</td><td>8</td><td>18</td></tr>
+          <tr><td>🚌 Km by Bus</td><td>15</td><td>5</td><td>0</td></tr>
+          <tr><td>♻️ Recycled</td><td>20</td><td>5</td><td>0</td></tr>
+          <tr><td>💧 Water (L)</td><td>50</td><td>150</td><td>300</td></tr>
         </tbody>
       </table>
     </div>
@@ -421,12 +386,8 @@
     const menu = document.getElementById('mainMenu');
     const centerText = document.getElementById('centerText');
     menu.classList.toggle('show');
-    
-    if(menu.classList.contains('show')) {
-      centerText.innerText = "ANALYZE";
-    } else {
-      centerText.innerText = "ECOTRACK";
-    }
+    if(menu.classList.contains('show')) { centerText.innerText = "ANALYZE"; } 
+    else { centerText.innerText = "ECOTRACK"; }
   }
 
   function calc() {
@@ -451,7 +412,6 @@
     else { bar.style.background = "#4caf50"; out.style.color = "#4caf50"; }
   }
 
-  // Sidebar Panel Toggling Automation
   document.addEventListener('DOMContentLoaded', () => {
     const toggleBtn = document.getElementById('practice-toggle-btn');
     const closeBtn = document.getElementById('panel-close-btn');
@@ -472,6 +432,9 @@
     overlay.addEventListener('click', closePanel);
   });
 </script>
+
+<script data-goatcounter="https://sam-ecotrack.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 
 </body>
 </html>
