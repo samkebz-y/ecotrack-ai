@@ -46,10 +46,11 @@ EcoTrack AI went from a half‑finished prototype to a polished, usable tool rea
 
 
 
+
 ## Screenshots
 
 **Before:**  
-![Old UI](Screenshot_20260522_133637_.jpeg)
+![Old UI](ExactFilenameOfBeforeScreenshot.jpeg)
 
 **After:**  
-![New UI](Screenshot_after.jpeg)
+![New UI](ExactFilenameOfAfterScreenshot.jpeg)
