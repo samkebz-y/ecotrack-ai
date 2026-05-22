@@ -43,3 +43,12 @@ Now it’s polished with:
 
 ### Completion Arc
 EcoTrack AI went from a half‑finished prototype to a polished, usable tool ready for real users.
+
+
+## Screenshots
+
+**Before:**  
+![Old UI](Screenshot_20260522_133637_.png)
+
+**After:**  
+![New UI](Screenshot_polished.png)
