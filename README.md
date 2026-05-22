@@ -45,13 +45,6 @@ Now it’s polished with:
 EcoTrack AI went from a half‑finished prototype to a polished, usable tool ready for real users.
 
 
-## Screenshots
-
-## Screenshots
-
-
-## Screenshots
-
 
 ## Screenshots
 
