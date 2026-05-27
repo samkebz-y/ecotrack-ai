@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoTrack AI - Perfect Layout</title>
+  <title>EcoTrack AI - Smart Environmental Impact Analysis</title>
   <style>
     :root {
       --primary: #4caf50;
-      --glass: rgba(255, 255, 255, 0.05);
-      --border: rgba(255, 255, 255, 0.1);
+      --primary-glow: rgba(76, 175, 80, 0.2);
+      --glass: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.08);
+      --bg-dark: #06090e;
     }
 
     * {
@@ -22,34 +24,110 @@
       margin: 0; 
       background: #000;
       color: #fff; 
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
       align-items: center;
-      padding-bottom: 40px;
       overflow-y: auto;
     }
 
     .bg-glow {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle at 50% 50%, #0a200a 0%, #000 70%);
+      background: radial-gradient(circle at 50% 40%, #081a08 0%, #000 75%);
       z-index: -1;
     }
 
+    /* Premium Navigation Bar */
+    .navbar {
+      width: 100%;
+      max-width: 1200px;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 1.5px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .nav-logo span {
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: #8b949e;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--primary);
+    }
+
+    .system-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: #8b949e;
+      background: rgba(76, 175, 80, 0.08);
+      border: 1px solid rgba(76, 175, 80, 0.2);
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+
+    .status-pulse {
+      width: 6px;
+      height: 6px;
+      background-color: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--primary);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.5); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(76, 175, 80, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+    }
+
+    /* Main Frame Header */
     header {
       text-align: center; 
-      padding: 25px 10px 5px 10px;
+      padding: 40px 10px 10px 10px;
       width: 100%;
     }
-    header h1 { margin: 0; font-size: 24px; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; }
-    header p { margin: 5px 0 0 0; font-size: 11px; color: #888; }
+    header h1 { margin: 0; font-size: 28px; letter-spacing: 3px; color: #fff; text-transform: uppercase; font-weight: 800; }
+    header p { margin: 8px 0 0 0; font-size: 12px; color: var(--primary); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
 
+    /* Core Application Wrapper Layout */
     .main-wrapper {
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%;
       height: 340px; 
-      margin-top: 150px; 
-      margin-bottom: 140px;
+      margin-top: 130px; 
+      margin-bottom: 130px;
       position: relative;
     }
 
@@ -64,16 +142,16 @@
 
     .center-node {
       position: absolute; width: 75px; height: 75px;
-      background: #111; border: 2px solid var(--primary); border-radius: 50%;
+      background: #000; border: 2px solid var(--primary); border-radius: 50%;
       display: flex; justify-content: center; align-items: center;
       z-index: 10; cursor: pointer;
-      box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+      box-shadow: 0 0 20px rgba(76, 175, 80, 0.2);
     }
     .center-node h2 { margin: 0; font-size: 10px; color: var(--primary); letter-spacing: 1px; }
 
     .eco-item {
       position: absolute; width: 95px; height: 95px; 
-      border-radius: 50%; background: rgba(15, 15, 15, 0.95);
+      border-radius: 50%; background: rgba(10, 10, 10, 0.96);
       backdrop-filter: blur(5px); display: flex; flex-direction: column; 
       justify-content: center; align-items: center;
       opacity: 0; pointer-events: none;
@@ -94,59 +172,135 @@
 
     .show .eco-item { opacity: 1; pointer-events: auto; }
     
-    /* Perfect Radial Grid Spreads */
-    .show .car     { transform: translate(0, -130px); border-color: #ff4444; }
-    .show .meat    { transform: translate(115px, -65px); border-color: #ffbb33; }
-    .show .elec    { transform: translate(115px, 65px); border-color: #fbff00; }
-    .show .bus     { transform: translate(0, 130px); border-color: #33b5e5; }
-    .show .recycle { transform: translate(-115px, 65px); border-color: #aa66cc; }
-    .show .water   { transform: translate(-115px, -65px); border-color: #2bbbad; }
+    /* Radial Layout Placement Constants */
+    .show .car     { transform: translate(0, -130px); border-color: #ff4444; box-shadow: 0 0 15px rgba(255,68,68,0.1); }
+    .show .meat    { transform: translate(115px, -65px); border-color: #ffbb33; box-shadow: 0 0 15px rgba(255,187,51,0.1); }
+    .show .elec    { transform: translate(115px, 65px); border-color: #fbff00; box-shadow: 0 0 15px rgba(251,255,0,0.1); }
+    .show .bus     { transform: translate(0, 130px); border-color: #33b5e5; box-shadow: 0 0 15px rgba(51,181,229,0.1); }
+    .show .recycle { transform: translate(-115px, 65px); border-color: #aa66cc; box-shadow: 0 0 15px rgba(170,102,204,0.1); }
+    .show .water   { transform: translate(-115px, -65px); border-color: #2bbbad; box-shadow: 0 0 15px rgba(43,187,173,0.1); }
 
+    /* Premium Results Area Deck */
     .result-area {
-      width: 90vw; 
-      max-width: 340px;
+      width: 92vw; 
+      max-width: 460px;
       display: flex; 
       flex-direction: column; 
       align-items: center;
       margin-top: 20px;
+      margin-bottom: 60px;
     }
 
     .calc-btn {
-      padding: 14px; background: var(--primary); border: none; border-radius: 10px;
-      color: white; font-weight: bold; width: 100%; text-transform: uppercase; font-size: 12px;
-      cursor: pointer; letter-spacing: 1px;
-      box-shadow: 0 4px 10px rgba(76, 175, 80, 0.2);
+      padding: 16px; background: var(--primary); border: none; border-radius: 12px;
+      color: #000; font-weight: 700; width: 100%; text-transform: uppercase; font-size: 13px;
+      cursor: pointer; letter-spacing: 1px; transition: all 0.3s ease;
     }
 
-    .progress-container { width: 100%; height: 6px; background: #222; border-radius: 4px; margin: 15px 0; }
-    .progress-bar { width: 0%; height: 100%; background: var(--primary); transition: 0.5s; border-radius: 4px; }
+    .calc-btn:hover {
+      background: #66bb6a;
+      box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
+      transform: translateY(-1px);
+    }
 
-    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-    .info-box { background: var(--glass); border: 1px solid var(--border); padding: 10px; border-radius: 8px; font-size: 10px; color: #aaa; text-align: center; }
-    .info-box b { color: #fff; display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;}
+    .progress-container { width: 100%; height: 8px; background: #141922; border-radius: 6px; margin: 20px 0; border: 1px solid var(--border); overflow: hidden; }
+    .progress-bar { width: 0%; height: 100%; background: var(--primary); transition: cubic-bezier(0.4, 0, 0.2, 1) 0.6s; }
 
-    /* Sliding Practice Drawer Styles */
+    /* The New Advanced AI Intelligence Card Container */
+    .ai-card {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    .ai-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .ai-icon {
+      font-size: 20px;
+      background: rgba(76, 175, 80, 0.1);
+      padding: 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(76, 175, 80, 0.2);
+    }
+
+    .ai-card-title {
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .ai-metrics-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .metric-pill {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .metric-pill span {
+      display: block;
+      font-size: 10px;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .metric-pill div {
+      font-size: 13px;
+      font-weight: 600;
+      color: #e6edf3;
+    }
+
+    .ai-analysis-box {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #c9d1d9;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 14px;
+      border-radius: 10px;
+      border-left: 3px solid var(--primary);
+    }
+
+    /* Sliding Practice Drawer Framework */
     .practice-btn {
       position: fixed;
-      top: 20px;
+      top: 15px;
       right: 20px;
-      background: rgba(76, 175, 80, 0.15);
-      border: 1px solid var(--primary);
+      background: rgba(76, 175, 80, 0.1);
+      border: 1px solid rgba(76, 175, 80, 0.3);
       color: var(--primary);
-      padding: 10px 16px;
+      padding: 8px 14px;
       border-radius: 6px;
       cursor: pointer;
       font-family: inherit;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       transition: all 0.3s ease;
-      z-index: 100;
+      z-index: 101;
     }
 
     .practice-btn:hover {
       background: var(--primary);
       color: #000;
-      box-shadow: 0 0 12px rgba(76, 175, 80, 0.4);
     }
 
     .practice-panel {
@@ -164,103 +318,64 @@
       flex-direction: column;
     }
 
-    .practice-panel.open {
-      right: 0; 
-    }
-
-    .panel-header {
-      padding: 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .panel-header h3 {
-      color: var(--primary);
-      margin: 0;
-      font-size: 18px;
-      letter-spacing: 1px;
-    }
-
-    .close-btn {
-      background: none;
-      border: none;
-      color: #888;
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    .close-btn:hover {
-      color: #fff;
-    }
-
-    .panel-content {
-      padding: 20px;
-      overflow-y: auto;
-    }
-
-    .panel-hint {
-      color: #8b949e;
-      font-size: 13px;
-      margin-bottom: 20px;
-      line-height: 1.4;
-    }
-
-    .table-container {
-      width: 100%;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 13px;
-    }
-
-    th, td {
-      padding: 12px 8px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      color: #c9d1d9;
-    }
-
-    th {
-      color: #8b949e;
-      font-weight: 600;
-    }
-
+    .practice-panel.open { right: 0; }
+    .panel-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .panel-header h3 { color: var(--primary); margin: 0; font-size: 18px; letter-spacing: 1px; }
+    .close-btn { background: none; border: none; color: #888; font-size: 24px; cursor: pointer; }
+    .close-btn:hover { color: #fff; }
+    .panel-content { padding: 20px; overflow-y: auto; }
+    .panel-hint { color: #8b949e; font-size: 13px; margin-bottom: 20px; line-height: 1.4; }
+    .table-container { width: 100%; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+    th, td { padding: 12px 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #c9d1d9; }
+    th { color: #8b949e; font-weight: 600; }
     .eco-warrior { color: #4caf50 !important; }
     .avg-joe { color: #ffeb3b !important; }
     .high-impact { color: #f44336 !important; }
+    .panel-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5); opacity: 0; pointer-events: none; transition: opacity 0.4s ease; z-index: 999; }
+    .panel-overlay.open { opacity: 1; pointer-events: auto; }
 
-    .panel-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.5);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-      z-index: 999;
+    /* Production Footer Section */
+    footer {
+      margin-top: auto;
+      width: 100%;
+      border-top: 1px solid var(--border);
+      background: rgba(6, 9, 14, 0.6);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
     }
 
-    .panel-overlay.open {
-      opacity: 1;
-      pointer-events: auto;
+    .footer-text {
+      font-size: 12px;
+      color: #8b949e;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 16px;
+      font-size: 11px;
+    }
+
+    .footer-links a {
+      color: #484f58;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: #8b949e;
     }
 
     @media (max-width: 480px) {
-      .practice-panel {
-        width: 100%;
-        right: -100%;
-      }
-      .practice-btn {
-        top: auto;
-        bottom: 20px; 
-        right: 20px;
-      }
+      .navbar { padding: 14px 16px; }
+      .nav-links { display: none; }
+      .practice-panel { width: 100%; right: -100%; }
+      .practice-btn { top: auto; bottom: 85px; right: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+      header h1 { font-size: 24px; }
+      .main-wrapper { margin-top: 140px; margin-bottom: 140px; }
     }
   </style>
 </head>
@@ -268,9 +383,23 @@
 
 <div class="bg-glow"></div>
 
+<!-- Premium Layout Top Navbar Module -->
+<nav class="navbar">
+  <div class="nav-logo">Eco<span>Track</span> AI</div>
+  <div class="nav-links">
+    <a href="#" class="active">Console</a>
+    <a href="#">Analytics Hub</a>
+    <a href="#">Security Matrix</a>
+  </div>
+  <div class="system-status">
+    <div class="status-pulse"></div>
+    <span>AI Systems Active</span>
+  </div>
+</nav>
+
 <header>
   <h1>EcoTrack AI</h1>
-  <p>Precision Environmental Analysis</p>
+  <p>Smart Environmental Impact Analysis</p>
 </header>
 
 <div class="main-wrapper">
@@ -284,7 +413,7 @@
       <input type="number" id="v-car" placeholder="0">
       <svg viewBox="0 0 100 100">
         <path id="p1" d="M 12,48 A 38,38 0 0,1 88,48" fill="none"/>
-        <text><textPath href="#p1" startOffset="50%" text-anchor="middle">Km per day by car</textPath></text>
+        <text><textPath href="#p1" startOffset="50%" text-anchor="middle">Daily Car Travel (km)</textPath></text>
       </svg>
     </div>
 
@@ -293,7 +422,7 @@
       <input type="number" id="v-meat" placeholder="0">
       <svg viewBox="0 0 100 100">
         <path id="p2" d="M 12,48 A 38,38 0 0,1 88,48" fill="none"/>
-        <text><textPath href="#p2" startOffset="50%" text-anchor="middle">Meat meals / week</textPath></text>
+        <text><textPath href="#p2" startOffset="50%" text-anchor="middle">Weekly Meat Meals</textPath></text>
       </svg>
     </div>
 
@@ -302,7 +431,7 @@
       <input type="number" id="v-elec" placeholder="0">
       <svg viewBox="0 0 100 100">
         <path id="p3" d="M 12,48 A 38,38 0 0,1 88,48" fill="none"/>
-        <text><textPath href="#p3" startOffset="50%" text-anchor="middle">Electricity hours</textPath></text>
+        <text><textPath href="#p3" startOffset="50%" text-anchor="middle">Electricity Usage (hours)</textPath></text>
       </svg>
     </div>
 
@@ -311,7 +440,7 @@
       <input type="number" id="v-bus" placeholder="0">
       <svg viewBox="0 0 100 100">
         <path id="p4" d="M 12,48 A 38,38 0 0,1 88,48" fill="none"/>
-        <text><textPath href="#p4" startOffset="50%" text-anchor="middle">Km per day by bus</textPath></text>
+        <text><textPath href="#p4" startOffset="50%" text-anchor="middle">Daily Bus Travel (km)</textPath></text>
       </svg>
     </div>
 
@@ -320,7 +449,7 @@
       <input type="number" id="v-recycle" placeholder="0">
       <svg viewBox="0 0 100 100">
         <path id="p5" d="M 12,48 A 38,38 0 0,1 88,48" fill="none"/>
-        <text><textPath href="#p5" startOffset="50%" text-anchor="middle">Items Recycled</textPath></text>
+        <text><textPath href="#p5" startOffset="50%" text-anchor="middle">Recycled Items</textPath></text>
       </svg>
     </div>
 
@@ -329,19 +458,37 @@
       <input type="number" id="v-water" placeholder="0">
       <svg viewBox="0 0 100 100">
         <path id="p6" d="M 12,48 A 38,38 0 0,1 88,48" fill="none"/>
-        <text><textPath href="#p6" startOffset="50%" text-anchor="middle">Liters of water</textPath></text>
+        <text><textPath href="#p6" startOffset="50%" text-anchor="middle">Water Usage (Liters)</textPath></text>
       </svg>
     </div>
   </div>
 </div>
 
 <div class="result-area">
-  <button class="calc-btn" onclick="calc()">Calculate My Impact & Run AI Diagnosis</button>
+  <button class="calc-btn" onclick="calc()">Analyze My Impact & Run AI Diagnosis</button>
   <div class="progress-container"><div class="progress-bar" id="pBar"></div></div>
-  <div id="scoreOut" style="font-size: 12px; font-weight:bold; color:var(--primary); margin-bottom: 8px; letter-spacing: 0.5px;">READY</div>
-  <div class="info-grid">
-    <div class="info-box"><b>Goal</b>Low Score</div>
-    <div class="info-box"><b>Tip</b>Plant Trees</div>
+  
+  <!-- Upgraded AI Diagnosis Output Card Panel Layout -->
+  <div class="ai-card">
+    <div class="ai-card-header">
+      <span class="ai-icon">🤖</span>
+      <div class="ai-card-title">AI Diagnostic Metrics</div>
+    </div>
+    
+    <div class="ai-metrics-row">
+      <div class="metric-pill">
+        <span>Strategic Goal</span>
+        <div id="goalOut">Achieve a Lower Score</div>
+      </div>
+      <div class="metric-pill">
+        <span>Current Evaluation</span>
+        <div id="scoreOut" style="color: var(--primary);">READY FOR DATA</div>
+      </div>
+    </div>
+    
+    <div class="ai-analysis-box" id="analysisOut">
+      Enter metrics above and execute diagnostics to formulate a tailored emission mitigation profile.
+    </div>
   </div>
 </div>
 
@@ -365,12 +512,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td>🚗 Km by Car</td><td>0</td><td>25</td><td>80</td></tr>
+          <tr><td>🚗 Car Travel (km)</td><td>0</td><td>25</td><td>80</td></tr>
           <tr><td>🥩 Meat Meals</td><td>0</td><td>4</td><td>14</td></tr>
           <tr><td>💡 Elec. Hours</td><td>2</td><td>8</td><td>18</td></tr>
-          <tr><td>🚌 Km by Bus</td><td>15</td><td>5</td><td>0</td></tr>
-          <tr><td>♻️ Recycled</td><td>20</td><td>5</td><td>0</td></tr>
-          <tr><td>💧 Water (L)</td><td>50</td><td>150</td><td>300</td></tr>
+          <tr><td>🚌 Bus Travel (km)</td><td>15</td><td>5</td><td>0</td></tr>
+          <tr><td>♻️ Recycled Items</td><td>20</td><td>5</td><td>0</td></tr>
+          <tr><td>💧 Water Usage (L)</td><td>50</td><td>150</td><td>300</td></tr>
         </tbody>
       </table>
     </div>
@@ -378,6 +525,16 @@
 </div>
 
 <div id="panel-overlay" class="panel-overlay"></div>
+
+<!-- Premium Anchor Footer Deck Layout -->
+<footer>
+  <div class="footer-text">© 2026 EcoTrack AI Engine. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="#">SaaS API Docs</a>
+    <a href="#">Terms of Service</a>
+    <a href="#">Privacy Protocol</a>
+  </div>
+</footer>
 
 <script>
   document.getElementById('mainMenu').classList.add('show');
@@ -393,6 +550,8 @@
   function calc() {
     const bar = document.getElementById('pBar');
     const out = document.getElementById('scoreOut');
+    const analysis = document.getElementById('analysisOut');
+    const goal = document.getElementById('goalOut');
     
     let car = parseFloat(document.getElementById('v-car').value) || 0;
     let meat = parseFloat(document.getElementById('v-meat').value) || 0;
@@ -407,9 +566,24 @@
     bar.style.width = total + '%';
     out.innerText = "IMPACT SCORE: " + total.toFixed(0) + "%";
     
-    if(total > 70) { bar.style.background = "#ff4444"; out.style.color = "#ff4444"; }
-    else if(total > 35) { bar.style.background = "#ffbb33"; out.style.color = "#ffbb33"; }
-    else { bar.style.background = "#4caf50"; out.style.color = "#4caf50"; }
+    if(total > 70) { 
+      bar.style.background = "#ff4444"; 
+      out.style.color = "#ff4444";
+      goal.innerText = "CRITICAL ACTION REQ.";
+      analysis.innerHTML = "<strong>AI Assessment:</strong> High impact footprint recorded. Priority action needed: Transition travel modes, reduce high-intensity meat consumption, and offset emissions by planting trees.";
+    }
+    else if(total > 35) { 
+      bar.style.background = "#ffbb33"; 
+      out.style.color = "#ffbb33";
+      goal.innerText = "OPTIMIZATION REQ.";
+      analysis.innerHTML = "<strong>AI Assessment:</strong> Moderate impact rating. Suggested enhancement: Implement residential energy management updates and increase domestic recycling targets.";
+    }
+    else { 
+      bar.style.background = "#4caf50"; 
+      out.style.color = "#4caf50";
+      goal.innerText = "SUSTAINABLE PROFILE";
+      analysis.innerHTML = "<strong>AI Assessment:</strong> Excellent sustainability profile! Keep maintaining low consumption baselines and supporting environmental conservation programs.";
+    }
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -433,6 +607,7 @@
   });
 </script>
 
+<!-- GOATCOUNTER VISITOR ANALYTICS TRACKING SCRIPT -->
 <script data-goatcounter="https://sam-ecotrack.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 
